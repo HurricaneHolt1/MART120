@@ -1,6 +1,6 @@
 /* Class selectors - affect at least 2 tags */
 .section-title {
-    color: darkgreen;
+    color: rgb(29, 6, 236);
     text-decoration: underline;
     text-align: center;
 }
