@@ -8,6 +8,7 @@
 .nav-bar {
     background-color: #dcdcdc;
     padding: 10px;
+    text-align: center;
 }
 
 /* ID selectors - affect at least 2 tags */
