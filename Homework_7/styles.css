@@ -2,6 +2,7 @@
 .section-title {
     color: darkgreen;
     text-decoration: underline;
+    text-align: center;
 }
 
 .nav-bar {
@@ -24,8 +25,11 @@ a {
     color: #333;
     text-decoration: none;
     padding: 5px;
+    text-align: center;
 }
 a:hover {
     color: darkblue;
     text-decoration: underline;
+   
+    
 }
