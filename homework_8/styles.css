@@ -1,0 +1,36 @@
+/* Class selectors - affect at least 2 tags */
+.section-title {
+    color: rgb(29, 6, 236);
+    text-decoration: underline;
+    text-align: center;
+}
+
+.nav-bar {
+    background-color: #dcdcdc;
+    padding: 10px;
+    text-align: center;
+}
+
+/* ID selectors - affect at least 2 tags */
+#main-title {
+    font-size: 2.5em;
+}
+
+#story-title, #contact-title {
+    font-size: 2em;
+    color: navy;
+}
+
+/* Links */
+a {
+    color: #333;
+    text-decoration: none;
+    padding: 5px;
+    text-align: center;
+}
+a:hover {
+    color: darkblue;
+    text-decoration: underline;
+   
+    
+}
