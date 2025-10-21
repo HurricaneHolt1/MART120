@@ -1,111 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Contact Me</title>
-    <!-- Bootstrap CDN -->
-    <link 
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
-        rel="stylesheet" 
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeo7FvA0sA0FfDOMq6cfw5FZxiwjGzV1bGd5KkNQm5Q5Xb6M" 
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>Contact Me</title>
 
-    <style>
-        /* Style for invalid fields */
-        .error {
-            border: 2px solid red !important;
-            background-color: #e90b0b;
-        }
-    </style>
+  <!-- Bootstrap CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeo7FvA0sA0FfDOMq6cfw5FZxiwjGzV1bGd5KkNQm5Q5Xb6M"
+    crossorigin="anonymous"
+  />
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    /* Custom style for invalid fields */
+    .error {
+      border: 2px solid red !important;
+      background-color: #ffe5e5 !important;
+    }
+  </style>
 </head>
 <body class="bg-light">
+  <h1 id="contact-title" class="text-center my-3">Contact Me</h1>
 
-    <h1 id="contact-title" class="text-center my-3">Contact Me</h1>
+  <nav class="nav-bar text-center mb-4">
+    <a href="index.html">Home</a> |
+    <a href="story.html">My Favorite Story</a> |
+    <a href="contact.html">Contact Me</a>
+  </nav>
 
-    <nav class="nav-bar text-center mb-4">
-        <a href="index.html">Home</a> |
-        <a href="story.html">My Favorite Story</a> |
-        <a href="contact.html">Contact Me</a>
-    </nav>
+  <div class="container">
+    <!-- Disable built-in HTML5 validation -->
+    <form id="contactForm" class="p-4 border rounded bg-white shadow" novalidate>
+      <div class="mb-3">
+        <label for="name" class="form-label">Full Name:</label>
+        <input type="text" id="name" name="name" class="form-control" />
+      </div>
 
-    <div class="container">
-        <form id="contactForm" class="p-4 border rounded bg-white shadow">
-            <div class="mb-3">
-                <label for="name" class="form-label">Full Name:</label>
-                <input type="text" id="name" name="name" class="form-control" required>
-            </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address:</label>
+        <input type="email" id="email" name="email" class="form-control" />
+      </div>
 
-            <div class="mb-3">
-                <label for="email" class="form-label">Email Address:</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
+      <div class="mb-3">
+        <label class="form-label">Do you accept the terms of agreement?</label><br />
+        <div class="form-check form-check-inline">
+          <input
+            type="radio"
+            id="yes"
+            name="terms"
+            value="yes"
+            class="form-check-input"
+          />
+          <label for="yes" class="form-check-label">Yes</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            type="radio"
+            id="no"
+            name="terms"
+            value="no"
+            class="form-check-input"
+          />
+          <label for="no" class="form-check-label">No</label>
+        </div>
+      </div>
 
-            <div class="mb-3">
-                <label class="form-label">Do you accept the terms of agreement?</label><br>
-                <div class="form-check form-check-inline">
-                    <input type="radio" id="yes" name="terms" value="yes" class="form-check-input" required>
-                    <label for="yes" class="form-check-label">Yes</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="radio" id="no" name="terms" value="no" class="form-check-input">
-                    <label for="no" class="form-check-label">No</label>
-                </div>
-            </div>
+      <button type="submit" class="btn btn-primary w-100">Submit</button>
+    </form>
+  </div>
 
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
-        </form>
-    </div>
+  <footer class="text-center mt-4">
+    <p>&copy; 2025 Papa Llama Drama</p>
+  </footer>
 
-    <footer class="text-center mt-4">
-        <p>&copy; 2025 Papa Llama</p>
-    </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const form = document.getElementById("contactForm");
+    const nameField = document.getElementById("name");
+    const emailField = document.getElementById("email");
+    const termsYes = document.getElementById("yes");
+    const termsNo = document.getElementById("no");
 
-    <script>
-        // JavaScript validation
-        const form = document.getElementById('contactForm');
-        const nameField = document.getElementById('name');
-        const emailField = document.getElementById('email');
-        const termsYes = document.getElementById('yes');
-        const termsNo = document.getElementById('no');
+    form.addEventListener("submit", function (event) {
+      // remove default form submit
+      event.preventDefault();
 
-        form.addEventListener('submit', function(event) {
-            let isValid = true;
+      // Reset all errors
+      nameField.classList.remove("error");
+      emailField.classList.remove("error");
 
-            // Reset previous error styles
-            nameField.classList.remove('error');
-            emailField.classList.remove('error');
+      // validation flag
+      let isValid = true;
 
-            // Check name
-            if (nameField.value.trim() === '') {
-                nameField.classList.add('error');
-                nameField.focus();
-                isValid = false;
-            }
-            // Check email
-            else if (emailField.value.trim() === '') {
-                emailField.classList.add('error');
-                emailField.focus();
-                isValid = false;
-            }
-            // Check terms radio buttons
-            else if (!termsYes.checked && !termsNo.checked) {
-                alert('Please select Yes or No for Terms of Agreement.');
-                termsYes.focus();
-                isValid = false;
-            }
+      // check name
+      if (nameField.value.trim() === "") {
+        nameField.classList.add("error");
+        nameField.focus();
+        isValid = false;
+      }
+      // check email
+      else if (emailField.value.trim() === "") {
+        emailField.classList.add("error");
+        emailField.focus();
+        isValid = false;
+      }
+      // check terms
+      else if (!termsYes.checked && !termsNo.checked) {
+        alert("Please select Yes or No for Terms of Agreement.");
+        termsYes.focus();
+        isValid = false;
+      }
 
-            // Prevent form from submitting if invalid
-            if (!isValid) {
-                event.preventDefault();
-            }
-        });
+      // if valid, you can show success or submit
+      if (isValid) {
+        alert("Form submitted successfully!");
+        form.reset();
+      }
+    });
 
-        // Optional: remove red border once user starts typing again
-        nameField.addEventListener('input', () => nameField.classList.remove('error'));
-        emailField.addEventListener('input', () => emailField.classList.remove('error'));
-    </script>
+    // remove red border once user starts typing again
+    nameField.addEventListener("input", () =>
+      nameField.classList.remove("error")
+    );
+    emailField.addEventListener("input", () =>
+      emailField.classList.remove("error")
+    );
+  </script>
 </body>
 </html>
