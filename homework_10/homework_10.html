@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Josh Holt Self Portrait (Animated)</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
+  </head>
+  <body>
+    <script>
+      // positions and speeds
+      let leftEyeX = 170;
+      let rightEyeX = 230;
+      let eyeSpeed1, eyeSpeed2;
+
+      let earYLeft = 220;
+      let earYRight = 220;
+      let earSpeed1, earSpeed2;
+
+      let goateeX = 180;
+      let goateeY = 280;
+      let goateeSpeedX, goateeSpeedY;
+
+      let titleSize = 20;
+      let titleGrow = true;
+      let titleCount = 0;
+
+      function setup() {
+        createCanvas(400, 500);
+        eyeSpeed1 = random(1, 3);
+        eyeSpeed2 = random(1, 3);
+        earSpeed1 = random(0.5, 2);
+        earSpeed2 = random(0.5, 2);
+        goateeSpeedX = random(1, 2);
+        goateeSpeedY = random(1, 2);
+      }
+
+      function draw() {
+        background(220);
+
+        // ===== TITLE ANIMATION =====
+        fill(0);
+        textAlign(CENTER);
+        textSize(titleSize);
+        text("Self Portrait of Josh Holt", width / 2, 40);
+
+        if (titleGrow) {
+          titleSize += 0.5;
+          if (titleSize > 30) {
+            titleGrow = false;
+            titleCount++;
+          }
+        } else {
+          titleSize -= 0.5;
+          if (titleSize < 20) {
+            titleGrow = true;
+            titleCount++;
+          }
+        }
+        if (titleCount >= 10) { // reset counter after 5 grows & 5 shrinks
+          titleCount = 0;
+        }
+
+        // ===== FACE =====
+        // Neck
+        fill(230, 200, 160);
+        rect(180, 280, 40, 40);
+
+        // Shirt
+        fill(50, 100, 200);
+        rect(120, 320, 160, 100);
+
+        // Head
+        fill(230, 200, 160);
+        ellipse(200, 220, 150, 180);
+
+        // Hair
+        fill(0);
+        triangle(125, 180, 200, 120, 275, 180);
+        rect(125, 160, 150, 20);
+
+        // ===== MOVING EARS (up/down on y-axis) =====
+        fill(230, 200, 160);
+        ellipse(125, earYLeft, 20, 30);
+        ellipse(275, earYRight, 20, 30);
+
+        // update ear motion
+        earYLeft += earSpeed1;
+        earYRight -= earSpeed2;
+
+        if (earYLeft > 230 || earYLeft < 210) {
+          earSpeed1 *= -1;
+        }
+        if (earYRight > 230 || earYRight < 210) {
+          earSpeed2 *= -1;
+        }
+
+        // ===== MOVING EYES (left/right on x-axis) =====
+        fill(255);
+        ellipse(leftEyeX, 210, 30, 20);
+        ellipse(rightEyeX, 210, 30, 20);
+
+        // Green pupils
+        fill(0, 150, 0);
+        ellipse(leftEyeX, 210, 10, 10);
+        ellipse(rightEyeX, 210, 10, 10);
+
+        // Black centers (points)
+        stroke(0);
+        strokeWeight(4);
+        point(leftEyeX, 210);
+        point(rightEyeX, 210);
+
+        // update eye motion
+        leftEyeX += eyeSpeed1;
+        rightEyeX -= eyeSpeed2;
+
+        if (leftEyeX > 180 || leftEyeX < 160) {
+          eyeSpeed1 *= -1;
+        }
+        if (rightEyeX > 240 || rightEyeX < 220) {
+          eyeSpeed2 *= -1;
+        }
+
+        // Glasses
+        noFill();
+        stroke(0);
+        strokeWeight(2);
+        rect(leftEyeX - 20, 195, 40, 25);
+        rect(rightEyeX - 20, 195, 40, 25);
+        line(leftEyeX + 20, 205, rightEyeX - 20, 205);
+
+        // Eyebrows
+        stroke(0);
+        strokeWeight(3);
+        line(150, 190, 180, 185);
+        line(220, 185, 250, 190);
+
+        // Nose
+        noStroke();
+        fill(230, 200, 160);
+        triangle(195, 225, 200, 250, 205, 225);
+
+        // Mouth
+        stroke(150, 50, 50);
+        strokeWeight(2);
+        line(180, 270, 220, 270);
+
+        // ===== MOVING GOATEE (diagonal motion) =====
+        noStroke();
+        fill(0);
+        rect(goateeX, goateeY, 40, 15);
+        triangle(goateeX, goateeY + 15, goateeX + 20, goateeY + 35, goateeX + 40, goateeY + 15);
+
+        // update diagonal movement
+        goateeX += goateeSpeedX;
+        goateeY += goateeSpeedY;
+        if (goateeX > 190 || goateeX < 170) {
+          goateeSpeedX *= -1;
+        }
+        if (goateeY > 290 || goateeY < 270) {
+          goateeSpeedY *= -1;
+        }
+
+        // Signature
+        noStroke();
+        fill(0);
+        textSize(16);
+        textAlign(RIGHT);
+        text("— Josh Holt", width - 10, height - 10);
+      }
+    </script>
+  </body>
+</html>
