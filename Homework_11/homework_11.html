@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Simple Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
+  </head>
+
+  <body>
+    <script>
+      // Player position
+      let playerX = 50;
+      let playerY = 50;
+
+      // Obstacle arrays
+      let obsX = [];
+      let obsY = [];
+      let obsSpeedX = [];
+      let obsSpeedY = [];
+      let obsSize = [];
+      let obsColor = [];
+
+      // Mouse-placed obstacle
+      let clickObsX = null;
+      let clickObsY = null;
+
+      let win = false;
+
+      function setup() {
+        createCanvas(600, 400);
+
+        // Create 2 moving obstacles
+        for (let i = 0; i < 2; i++) {
+          obsX[i] = random(width);
+          obsY[i] = random(height);
+          obsSpeedX[i] = random(-2, 2);
+          obsSpeedY[i] = random(-2, 2);
+          obsSize[i] = random(30, 60);
+          obsColor[i] = color(random(255), random(255), random(255));
+        }
+      }
+
+      function draw() {
+        background(200);
+
+        // === EXIT AREA ===
+        fill(0, 255, 0);
+        rect(width - 80, height / 2 - 40, 60, 80);
+        textSize(16);
+        fill(0);
+        text("EXIT", width - 50, height / 2);
+
+        // === PLAYER ===
+        if (!win) {
+          fill(0, 0, 255);
+          rect(playerX, playerY, 30, 30);
+        }
+
+        // === MOVING OBSTACLES ===
+        for (let i = 0; i < obsX.length; i++) {
+          fill(obsColor[i]);
+          rect(obsX[i], obsY[i], obsSize[i], obsSize[i]);
+
+          // Move
+          obsX[i] += obsSpeedX[i];
+          obsY[i] += obsSpeedY[i];
+
+          // Wrap around screen
+          if (obsX[i] > width) obsX[i] = 0;
+          else if (obsX[i] < 0) obsX[i] = width;
+
+          if (obsY[i] > height) obsY[i] = 0;
+          else if (obsY[i] < 0) obsY[i] = height;
+        }
+
+        // === CLICKED OBSTACLE ===
+        if (clickObsX !== null && clickObsY !== null) {
+          fill(150, 50, 50);
+          rect(clickObsX, clickObsY, 40, 40);
+        }
+
+        // === PLAYER MOVEMENT (if/else if + logical operators) ===
+        if (keyIsDown(LEFT_ARROW)) {
+          playerX -= 3;
+        } else if (keyIsDown(RIGHT_ARROW)) {
+          playerX += 3;
+        }
+
+        if (keyIsDown(UP_ARROW) && playerY > 0) {
+          playerY -= 3;
+        } else if (keyIsDown(DOWN_ARROW) || playerY < height) {
+          playerY += 3;
+        }
+
+        // === WIN CONDITION ===
+        if (
+          playerX > width - 80 &&
+          playerY > height / 2 - 40 &&
+          playerY < height / 2 + 40
+        ) {
+          win = true;
+        }
+
+        // === WIN MESSAGE ===
+        if (win) {
+          textSize(32);
+          fill(0);
+          textAlign(CENTER);
+          text("YOU WIN!", width / 2, height / 2);
+        }
+      }
+
+      // === ADD OBSTACLE ON MOUSE CLICK ===
+      function mousePressed() {
+        clickObsX = mouseX;
+        clickObsY = mouseY;
+      }
+    </script>
+  </body>
+</html>
