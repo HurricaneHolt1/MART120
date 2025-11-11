@@ -33,9 +33,9 @@
       function draw() {
         background(220);
 
-        // -----------------------------
+      
         // INSTRUCTIONS SCREEN
-        // -----------------------------
+      
         if (showInstructions) {
           instructionTimer++;
 
@@ -55,9 +55,9 @@
           return; // stop the game until instructions are gone
         }
 
-        // -----------------------------
+        
         // MAIN GAME
-        // -----------------------------
+        
         movePlayer();
         moveObstacles();
 
@@ -73,9 +73,8 @@
         showInstructions = false;
       }
 
-      // ------------------------
       // PLAYER
-      // ------------------------
+      
       function movePlayer() {
         if (keyIsDown(LEFT_ARROW)) playerX -= playerSpeed;
         if (keyIsDown(RIGHT_ARROW)) playerX += playerSpeed;
@@ -91,9 +90,9 @@
         circle(playerX, playerY, playerSize);
       }
 
-      // ------------------------
+     
       // OBSTACLES
-      // ------------------------
+      
       function makeObstacle(x, y) {
         return {
           x: x,
@@ -127,9 +126,8 @@
         }
       }
 
-      // ------------------------
       // STATIC OBSTACLE
-      // ------------------------
+     
       function mousePressed() {
         if (staticObstacle === null) {
           staticObstacle = { x: mouseX, y: mouseY, size: 30 };
@@ -143,9 +141,9 @@
         }
       }
 
-      // ------------------------
+    
       // EXIT
-      // ------------------------
+      
       function drawExit() {
         fill(0, 255, 0);
         rect(exitX, exitY, exitSize, exitSize);
