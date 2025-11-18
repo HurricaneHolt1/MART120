@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
+  <title>Escape Game</title>
+</head>
+<body>
+<script>
+
+// GLOBAL VARIABLES 
+let playerX, playerY, playerSize = 25;
+let playerSpeed = 4;
+
+let obstacles = [];   // moving obstacles
+let newObstacle = null;  // mouse obstacle
+
+let exitX = 350, exitY = 350, exitSize = 40;
+
+let won = false;
+
+
+//  SETUP
+
+function setup() {
+  createCanvas(400, 400);
+
+  createPlayer();
+
+  // Create two obstacles
+  createObstacle(100, 200);
+  createObstacle(250, 100);
+}
+
+
+
+//  DRAW
+
+function draw() {
+  background(220);
+
+  drawBorder();
+  movePlayer();
+  moveObstacle1();
+  moveObstacle2();
+  drawObstacles();
+  drawPlayer();
+  drawMouseObstacle();
+  drawExit();
+
+  checkWin();
+  displayWinMessage();
+}
+
+
+
+//  FUNCTION: CREATE PLAYER
+
+function createPlayer() {
+  playerX = 50;
+  playerY = 50;
+}
+
+
+//  FUNCTION: MOVE PLAYER
+
+function movePlayer() {
+  if (keyIsDown(LEFT_ARROW))  playerX -= playerSpeed;
+  if (keyIsDown(RIGHT_ARROW)) playerX += playerSpeed;
+  if (keyIsDown(UP_ARROW))    playerY -= playerSpeed;
+  if (keyIsDown(DOWN_ARROW))  playerY += playerSpeed;
+
+  // Keep inside screen
+  playerX = constrain(playerX, 0, width);
+  playerY = constrain(playerY, 0, height);
+}
+
+
+//  FUNCTION: DRAW PLAYER
+
+function drawPlayer() {
+  fill(0, 100, 255);
+  circle(playerX, playerY, playerSize);
+}
+
+
+//  FUNCTION: CREATE OBSTACLE
+
+function createObstacle(x, y) {
+  let obs = {
+    x: x,
+    y: y,
+    w: random(20, 40),
+    h: random(20, 40),
+    xSpeed: random(-2, 2),
+    ySpeed: random(-2, 2),
+    r: random(255),
+    g: random(255),
+    b: random(255)
+  };
+  obstacles.push(obs);
+}
+
+
+//  FUNCTION: MOVE OBSTACLE #1
+
+function moveObstacle1() {
+  let obs = obstacles[0];
+  obs.x += obs.xSpeed;
+  obs.y += obs.ySpeed;
+
+  // wrap around screen
+  if (obs.x > width) obs.x = 0;
+  if (obs.x < 0) obs.x = width;
+  if (obs.y > height) obs.y = 0;
+  if (obs.y < 0) obs.y = height;
+}
+
+
+//  FUNCTION: MOVE OBSTACLE #2
+
+function moveObstacle2() {
+  let obs = obstacles[1];
+  obs.x += obs.xSpeed * 1.5; // slightly different speed
+  obs.y += obs.ySpeed * 1.2;
+
+  if (obs.x > width) obs.x = 0;
+  if (obs.x < 0) obs.x = width;
+  if (obs.y > height) obs.y = 0;
+  if (obs.y < 0) obs.y = height;
+}
+
+
+// FUNCTION: DRAW OBSTACLES
+
+function drawObstacles() {
+  for (let obs of obstacles) {
+    fill(obs.r, obs.g, obs.b);
+    rect(obs.x, obs.y, obs.w, obs.h);
+  }
+}
+
+
+// FUNCTION: MOUSE CREATES OBSTACLE
+
+function mousePressed() {
+  newObstacle = {
+    x: mouseX,
+    y: mouseY,
+    size: 30
+  };
+}
+
+function drawMouseObstacle() {
+  if (newObstacle !== null) {
+    fill(150, 40, 180);
+    rect(newObstacle.x, newObstacle.y, newObstacle.size, newObstacle.size);
+  }
+}
+
+
+
+//   FUNCTION: DRAW BORDER
+
+function drawBorder() {
+  stroke(0);
+  strokeWeight(5);
+  noFill();
+  rect(0, 0, width, height);
+}
+
+
+
+//   FUNCTION: DRAW EXIT
+
+function drawExit() {
+  fill(0, 255, 0);
+  rect(exitX, exitY, exitSize, exitSize);
+
+  fill(0);
+  textSize(14);
+  textAlign(CENTER);
+  text("EXIT", exitX + exitSize / 2, exitY - 5);
+}
+
+
+
+//  FUNCTION: CHECK WIN
+
+function checkWin() {
+  if (
+    playerX > exitX &&
+    playerX < exitX + exitSize &&
+    playerY > exitY &&
+    playerY < exitY + exitSize
+  ) {
+    won = true;
+  }
+}
+
+
+//   FUNCTION: SHOW WIN MESSAGE
+
+function displayWinMessage() {
+  if (won) {
+    fill(0);
+    textSize(32);
+    textAlign(CENTER);
+    text("YOU WIN!", width / 2, height / 2);
+    noLoop();
+  }
+}
+
+</script>
+</body>
+</html>
