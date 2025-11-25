@@ -1,5 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Beginner Game</title>
+  <meta charset="utf-8">
+
+  <!-- Load p5.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+
+</head>
+<body>
+
+<script>
 
 // GLOBAL VARIABLES
+
 
 let playerX;
 let playerY;
@@ -30,7 +44,6 @@ function setup() {
   createObstacles();
 }
 
-
 // DRAW
 
 function draw() {
@@ -50,7 +63,6 @@ function draw() {
 
 
 // FUNCTIONS
-
 
 // Create the player
 
@@ -123,6 +135,7 @@ function drawObstacles() {
 }
 
 
+
 // Mouse-click obstacle
 
 function mousePressed() {
@@ -181,3 +194,8 @@ function checkWin() {
     text("YOU WIN!", width / 2, height / 2);
   }
 }
+
+</script>
+
+</body>
+</html>
