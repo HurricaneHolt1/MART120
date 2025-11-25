@@ -1,0 +1,183 @@
+
+// GLOBAL VARIABLES
+
+let playerX;
+let playerY;
+let playerSize = 25;
+
+let obstaclesX = [];
+let obstaclesY = [];
+let obstaclesSize = [];
+let obstaclesColor = [];
+let obstaclesXSpeed = [];
+let obstaclesYSpeed = [];
+
+let mouseObstacleX = null;
+let mouseObstacleY = null;
+
+let exitX = 720;
+let exitY = 520;
+let exitW = 60;
+let exitH = 60;
+
+
+// SETUP
+
+function setup() {
+  createCanvas(800, 600);
+
+  createPlayer();
+  createObstacles();
+}
+
+
+// DRAW
+
+function draw() {
+  background(40);
+
+  drawBorder();
+  movePlayer();
+  drawPlayer();
+  moveObstacles();
+  drawObstacles();
+  drawMouseObstacle();
+  drawExit();
+  checkWin();
+}
+
+
+
+
+// FUNCTIONS
+
+
+// Create the player
+
+function createPlayer() {
+  playerX = width / 2;
+  playerY = height / 2;
+}
+
+// Move the player
+
+function movePlayer() {
+  if (keyIsDown(LEFT_ARROW)) {
+    playerX -= 4;
+  }
+  if (keyIsDown(RIGHT_ARROW)) {
+    playerX += 4;
+  }
+  if (keyIsDown(UP_ARROW)) {
+    playerY -= 4;
+  }
+  if (keyIsDown(DOWN_ARROW)) {
+    playerY += 4;
+  }
+}
+
+// Draw the player
+
+function drawPlayer() {
+  fill(0, 200, 255);
+  circle(playerX, playerY, playerSize);
+}
+
+
+
+// Create 5 obstacles
+
+function createObstacles() {
+  for (let i = 0; i < 5; i++) {
+    obstaclesX[i] = random(width);
+    obstaclesY[i] = random(height);
+    obstaclesSize[i] = random(20, 60);
+    obstaclesColor[i] = color(random(255), random(255), random(255));
+    obstaclesXSpeed[i] = random(-2, 2);
+    obstaclesYSpeed[i] = random(-2, 2);
+  }
+}
+
+// Move obstacles randomly and wrap around screen
+
+function moveObstacles() {
+  for (let i = 0; i < obstaclesX.length; i++) {
+
+    obstaclesX[i] += obstaclesXSpeed[i];
+    obstaclesY[i] += obstaclesYSpeed[i];
+
+    if (obstaclesX[i] > width) obstaclesX[i] = 0;
+    if (obstaclesX[i] < 0) obstaclesX[i] = width;
+    if (obstaclesY[i] > height) obstaclesY[i] = 0;
+    if (obstaclesY[i] < 0) obstaclesY[i] = height;
+  }
+}
+
+// Draw obstacles
+
+function drawObstacles() {
+  for (let i = 0; i < obstaclesX.length; i++) {
+    fill(obstaclesColor[i]);
+    ellipse(obstaclesX[i], obstaclesY[i], obstaclesSize[i]);
+  }
+}
+
+
+// Mouse-click obstacle
+
+function mousePressed() {
+  mouseObstacleX = mouseX;
+  mouseObstacleY = mouseY;
+}
+
+// Draw the mouse-made obstacle
+
+function drawMouseObstacle() {
+  if (mouseObstacleX !== null) {
+    fill(255, 200, 0);
+    rect(mouseObstacleX - 20, mouseObstacleY - 20, 40, 40);
+  }
+}
+
+
+
+// Draw border
+
+function drawBorder() {
+  stroke(255);
+  noFill();
+  rect(0, 0, width, height);
+  noStroke();
+}
+
+
+
+// Exit
+
+function drawExit() {
+  fill(0, 255, 0);
+  rect(exitX, exitY, exitW, exitH);
+
+  fill(0);
+  textSize(18);
+  textAlign(CENTER, CENTER);
+  text("EXIT", exitX + exitW / 2, exitY + exitH / 2);
+}
+
+
+
+// Winning
+
+function checkWin() {
+  if (
+    playerX > exitX &&
+    playerX < exitX + exitW &&
+    playerY > exitY &&
+    playerY < exitY + exitH
+  ) {
+    fill(255);
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text("YOU WIN!", width / 2, height / 2);
+  }
+}
