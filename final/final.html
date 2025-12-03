@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Color Explorer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+</head>
+<body>
+
+<script>
+
+// ------------------
+// GLOBAL VARIABLES
+// ------------------
+let player = { x: 400, y: 300, size: 30, speed: 4 };
+let playerTrail = [];
+
+let orbsX = [];
+let orbsY = [];
+let orbsSize = [];
+let numOrbs = 10;
+
+let obstaclesX = [];
+let obstaclesY = [];
+let obstaclesSize = [];
+let obstaclesXSpeed = [];
+let obstaclesYSpeed = [];
+let numObstacles = 5;
+
+let mouseShapes = [];
+
+let bgColor;
+
+// ------------------
+// SETUP
+// ------------------
+function setup() {
+  createCanvas(800, 600);
+  bgColor = color(30, 30, 40);
+
+  // create orbs
+  for (let i = 0; i < numOrbs; i++) {
+    orbsX[i] = random(50, width-50);
+    orbsY[i] = random(50, height-50);
+    orbsSize[i] = random(15, 35);
+  }
+
+  // create obstacles
+  for (let i = 0; i < numObstacles; i++) {
+    obstaclesX[i] = random(width);
+    obstaclesY[i] = random(height);
+    obstaclesSize[i] = random(30, 60);
+    obstaclesXSpeed[i] = random(-2, 2);
+    obstaclesYSpeed[i] = random(-2, 2);
+  }
+}
+
+// ------------------
+// DRAW LOOP
+// ------------------
+function draw() {
+  background(bgColor);
+
+  drawOrbs();
+  moveObstacles();
+  drawObstacles();
+  movePlayer();
+  drawPlayer();
+  drawPlayerTrail();
+  drawMouseShapes();
+  checkWin();
+  drawInstructions();
+}
+
+// ------------------
+// FUNCTIONS
+// ------------------
+
+// PLAYER
+function movePlayer() {
+  if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) player.x -= player.speed; // A key
+  if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) player.x += player.speed; // D key
+  if (keyIsDown(UP_ARROW) || keyIsDown(87)) player.y -= player.speed; // W key
+  if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) player.y += player.speed; // S key
+
+  // stay inside canvas
+  player.x = constrain(player.x, 0, width);
+  player.y = constrain(player.y, 0, height);
+
+  // add trail
+  playerTrail.push({x: player.x, y: player.y});
+  if (playerTrail.length > 100) {
+    playerTrail.shift();
+  }
+}
+
+function drawPlayer() {
+  fill(0, 200, 255);
+  circle(player.x, player.y, player.size);
+}
+
+function drawPlayerTrail() {
+  stroke(0, 150, 200, 100);
+  for (let i = 0; i < playerTrail.length; i++) {
+    point(playerTrail[i].x, playerTrail[i].y);
+  }
+  noStroke();
+}
+
+// ORBS
+function drawOrbs() {
+  for (let i = orbsX.length-1; i >= 0; i--) {
+    fill(255, 100, 100);
+    circle(orbsX[i], orbsY[i], orbsSize[i]);
+
+    // check collision with player
+    if (dist(player.x, player.y, orbsX[i], orbsY[i]) < player.size/2 + orbsSize[i]/2) {
+      orbsX.splice(i,1);
+      orbsY.splice(i,1);
+      orbsSize.splice(i,1);
+
+      // random background color
+      bgColor = color(random(255), random(255), random(255));
+    }
+  }
+}
+
+// OBSTACLES
+function moveObstacles() {
+  for (let i = 0; i < obstaclesX.length; i++) {
+    obstaclesX[i] += obstaclesXSpeed[i];
+    obstaclesY[i] += obstaclesYSpeed[i];
+
+    if (obstaclesX[i] > width) obstaclesX[i] = 0;
+    if (obstaclesX[i] < 0) obstaclesX[i] = width;
+    if (obstaclesY[i] > height) obstaclesY[i] = 0;
+    if (obstaclesY[i] < 0) obstaclesY[i] = height;
+  }
+}
+
+function drawObstacles() {
+  for (let i = 0; i < obstaclesX.length; i++) {
+    fill(200, 200, 0);
+    rect(obstaclesX[i]-obstaclesSize[i]/2, obstaclesY[i]-obstaclesSize[i]/2, obstaclesSize[i], obstaclesSize[i]);
+  }
+}
+
+// MOUSE SHAPES
+function mousePressed() {
+  mouseShapes.push({x: mouseX, y: mouseY, size: random(20,50)});
+}
+
+function drawMouseShapes() {
+  for (let i = 0; i < mouseShapes.length; i++) {
+    fill(150, 50, 255, 150);
+    triangle(mouseShapes[i].x, mouseShapes[i].y, mouseShapes[i].x + mouseShapes[i].size, mouseShapes[i].y + mouseShapes[i].size/2, mouseShapes[i].x - mouseShapes[i].size, mouseShapes[i].y + mouseShapes[i].size/2);
+  }
+}
+
+// WINNING
+function checkWin() {
+  if (orbsX.length === 0) {
+    fill(255);
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text("YOU WIN!", width/2, height/2);
+  }
+}
+
+// INSTRUCTIONS
+function drawInstructions() {
+  fill(255);
+  textSize(16);
+  textAlign(LEFT);
+  text("Use arrow keys or WASD to move the circle.", 10, 20);
+  text("Collect all red orbs to win!", 10, 40);
+  text("Click to add a purple triangle to the canvas.", 10, 60);
+}
+
+</script>
+
+</body>
+</html>
